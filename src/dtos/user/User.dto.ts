@@ -1,4 +1,4 @@
-import { Exclude, Type } from 'class-transformer';
+import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import {IsString,IsEnum, IsDate, IsEmail, IsOptional} from 'class-validator'
 import { ObjectId } from 'mongoose';
 import { PartialType } from '@nestjs/mapped-types';
@@ -37,13 +37,35 @@ export class UserUpdateDto extends PartialType(UserCreateDto){
 
 
 export class userListResponse {
-    _id: ObjectId;
+    @Expose()
+    @Transform(({ value }) => value.toString())
+    _id: any;
+    
+    @Expose()
     firstName: string;
+    
+    @Expose()
     lastName: string;
+    
+    @Expose()
     email: string;
+
     @Exclude()
     password: string;
+
+    @Expose()
     dob: Date;
+
+    @Expose()
     address: string;
+
+    @Expose()
     contactNo: string;
+    
+    @Exclude()
+    __v:number
+
+    constructor(partial: Partial<userListResponse>) {
+        Object.assign(this, partial);
+    }
 }

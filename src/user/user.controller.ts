@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Put, UseInterceptors } from '@nestjs/common';
 import {UserService} from './user.service'
 import { UserCreateDto, UserUpdateDto, userListResponse } from 'src/dtos/user/User.dto';
 
@@ -9,12 +9,27 @@ export class UserController {
     ){}
 
     @Get('')
-    // async getAllUsers() :Promise<userListResponse> {
-        async getAllUsers(){
+    @UseInterceptors(ClassSerializerInterceptor)
+    async getAllUsers() {
         try {
             const userdata = await this.userService.getAll()
             if(userdata){
                 return {'status':200,'msg':"user list",'data':userdata}
+            } else {
+                return {'status':500,'msg':"user not found",'data':[]}
+            }
+        } catch (error) {
+            return error
+        }
+    }
+
+    @UseInterceptors(ClassSerializerInterceptor)
+    @Get('/:id')
+    async getUser(@Param('id')id: string) {
+        try {
+            const userdata = await this.userService.getUserDetail(id)
+            if(userdata){
+                return {'status':200,'msg':"user detail",'data':userdata}
             } else {
                 return {'status':500,'msg':"user not found",'data':[]}
             }
