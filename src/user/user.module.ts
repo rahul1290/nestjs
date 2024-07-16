@@ -11,7 +11,7 @@ import {User,userSchema} from '../schemas/user.schema'
             name : User.name,
             schema : userSchema
             }
-        ])
+        ]),
     ],
   controllers: [UserController],
   providers: [UserService],
