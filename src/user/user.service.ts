@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/schemas/user.schema';
-import { UserCreateDto, UserUpdateDto, userListResponse } from '../dtos/user/User.dto'
+import { UserCreateDto, UserUpdateDto, userListResponse } from '../dtos/User.dto'
 
 @Injectable()
 export class UserService {
@@ -21,6 +21,16 @@ export class UserService {
     async getUserDetail(userId: string): Promise<userListResponse> {
         try {
             const users = await this.userModel.findOne({_id:userId,isActive:true}).lean().exec()
+            return new userListResponse(users);
+        } catch (error) {
+            console.log("getAll error", error);
+            throw error
+        }   
+    }
+
+    async findByEmail(userMail: string): Promise<userListResponse> {
+        try {
+            const users = await this.userModel.findOne({email:userMail,isActive:true}).lean().exec()
             return new userListResponse(users);
         } catch (error) {
             console.log("getAll error", error);

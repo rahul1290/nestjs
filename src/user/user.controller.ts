@@ -1,7 +1,9 @@
-import { Body, ClassSerializerInterceptor, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Put, UseInterceptors } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Put, UseGuards, UseInterceptors } from '@nestjs/common';
 import {UserService} from './user.service'
-import { UserCreateDto, UserUpdateDto, userListResponse } from 'src/dtos/user/User.dto';
+import { UserCreateDto, UserUpdateDto, userListResponse } from 'src/dtos/User.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('user')
 export class UserController {
     constructor(
