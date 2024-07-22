@@ -12,9 +12,9 @@ export class CategoryController {
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   async create(@Body() createCategoryDto: CreateCategoryDto, @Req() request: any, @UploadedFile() file: Express.Multer.File) {
-    console.log("file==============>",file)
     const data = {
       ...createCategoryDto,
+      image : file.filename,
       createdBy : request.user.userid,
       createdAt: Date.now()
     }
@@ -40,10 +40,22 @@ export class CategoryController {
     );
   }
 
+
+  
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
+  @UseInterceptors(FileInterceptor('file'))
+  async update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto, @UploadedFile() file: Express.Multer.File) {
+    let data;
+    if(file){
+      data = {
+        ...updateCategoryDto,
+        image : file.filename,
+      }
+    } else {
+      data = updateCategoryDto
+    }
     return this.handleRequest(
-      () => this.categoryService.update(id, updateCategoryDto),
+      () => this.categoryService.update(id, data),
       'Category updated.'
     );
   }

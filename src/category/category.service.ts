@@ -24,6 +24,11 @@ export class CategoryService {
     try {
       const query = [
         {
+          $match: {
+            'isActive': true
+          }
+        },
+        {
           $lookup: {
             from: "users",
             localField: "createdBy",

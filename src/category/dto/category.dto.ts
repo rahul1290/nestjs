@@ -10,8 +10,8 @@ export class CreateCategoryDto {
     @IsString()
     description: string;
     
-    @IsString()
-    image:string;
+    // @IsString()
+    // file: any;
 }
 
 export class UpdateCategoryDto extends PartialType(CreateCategoryDto) {}
