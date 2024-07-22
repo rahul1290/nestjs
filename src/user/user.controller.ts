@@ -1,6 +1,6 @@
 import { Body, ClassSerializerInterceptor, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Put, UseGuards, UseInterceptors } from '@nestjs/common';
 import {UserService} from './user.service'
-import { UserCreateDto, UserUpdateDto, userListResponse } from 'src/dtos/User.dto';
+import { UserCreateDto, UserUpdateDto, userListResponse } from 'src/user/dto/User.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 
 @UseGuards(AuthGuard)
